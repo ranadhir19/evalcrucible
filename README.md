@@ -1,4 +1,4 @@
-# agent-eval-lab
+# evalcrucible
 
 **Prove it works: an eval-integrity toolkit for agent builders.**
 
@@ -38,8 +38,8 @@ environment variables to set. Developed and tested with Python 3.12
 (any current Python 3 works).
 
 ```bash
-git clone https://github.com/ranadhir19/agent-eval-lab.git
-cd agent-eval-lab
+git clone https://github.com/ranadhir19/evalcrucible.git
+cd evalcrucible
 python3 validate.py   # self-check: must end with OVERALL PASS
 ```
 
