@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-label="evalcrucible">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/><stop offset="100%" stop-color="#14263F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="360" fill="url(#bg)"/>
+  <rect x="64" y="72" width="72" height="6" fill="#F5B544"/>
+  <text x="64" y="155" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700" fill="#FFFFFF">evalcrucible</text>
+  <text x="64" y="215" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#CBD5E1"><tspan x="64" dy="0">Prove your graders — a grader-validation</tspan><tspan x="64" dy="38">and benchmark-audit toolkit for agent builders.</tspan></text>
+  <rect x="64" y="285" width="760" height="4" fill="#2DD4BF"/>
+  
+  <g stroke="#2DD4BF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="1055" y1="90" x2="1055" y2="250"/>
+    <line x1="935" y1="115" x2="1175" y2="115"/>
+    <line x1="935" y1="115" x2="905" y2="185"/><line x1="935" y1="115" x2="965" y2="185"/>
+    <path d="M 885 185 A 50 22 0 0 0 985 185"/>
+    <line x1="1175" y1="115" x2="1145" y2="185"/><line x1="1175" y1="115" x2="1205" y2="185"/>
+    <path d="M 1125 185 A 50 22 0 0 0 1225 185"/>
+    <line x1="1005" y1="270" x2="1105" y2="270"/>
+  </g>
+  <circle cx="1055" cy="90" r="12" fill="#F5B544"/>
+  <path d="M 1032 155 L 1048 172 L 1082 132" stroke="#F5B544" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,3 +1,5 @@
+![evalcrucible — Prove your graders](banner.svg)
+
 # evalcrucible
 
 **Prove your graders: a grader-validation and benchmark-audit toolkit for agent builders.**
