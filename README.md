@@ -1,15 +1,18 @@
 # evalcrucible
 
-**Prove it works: an eval-integrity toolkit for agent builders.**
+**Prove your graders: a grader-validation and benchmark-audit toolkit for agent builders.**
 
 Companion lab to The Architect's AI Workshop, Agent Series Ep. 4 —
 "Prove It Works: Building an Eval That Can Catch a Broken Agent
 (and a Broken Benchmark)".
 
 Most agent content teaches you to build the agent. This lab teaches
-you to audit the proof: design a task suite, validate your graders
-against labelled data, and run an audit that catches broken tests —
-because a benchmark with flawed tests measures the tests. (The
+you to audit the measuring instrument: validate your graders against
+labelled data, and run an audit that catches broken tests in a static
+(prompt → gold) task suite — because a benchmark with flawed tests
+measures the tests. It does not evaluate agent runs; to score how an
+agent executed a recorded run, see runreckon
+(github.com/ranadhir19/runreckon). (The
 field's object lesson: OpenAI stopped reporting SWE-bench Verified in
 February 2026 after an audit found 59.4% of the reviewed problems had
 flawed tests.)
@@ -25,7 +28,7 @@ deterministic.
 | `agents.py` | Four instruments: a reference agent (correct by construction), a degraded agent (three documented systematic errors), a null agent (returns nothing), an echo agent (returns the prompt). |
 | `graders.py` | Task checkers, plus three graders (exact, normalized, rubric) whose accuracy is itself measured. The rubric grader is a deterministic stand-in for a cheap model judge; the procedure being taught — validate any grader against labels — is grader-agnostic. |
 | `audit.py` | The audit: four checks that need no knowledge of which tests are broken. A: a known-correct agent failing a test makes the test the suspect. B: a test that null/echo/constant agents pass measures nothing. C: a test that deliberately wrong answers pass is too loose. D: an eval task duplicating a dev task is leakage. |
-| `run_eval.py` | Scores every agent on both suites, with Wilson 95% intervals. |
+| `run_eval.py` | Scores the four instrument agents on both suites, with Wilson 95% intervals — the audit's raw material, not a run-evaluation product. |
 | `experiment.py` | The pre-registered experiment; writes `RESULTS.md`. |
 | `PREREGISTRATION.md` | The hypotheses and acceptance bounds, frozen before the first run. |
 | `validate.py` | The harness: compile, unit tests, and an experiment re-run that must reproduce `RESULTS.md` byte for byte. |
