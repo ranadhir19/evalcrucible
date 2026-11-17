@@ -30,9 +30,11 @@ All numbers measured by `experiment.py`; bounds frozen in PREREGISTRATION.md.
   - flaw-12: B: echo agent passes this test; B: constant agent passes this test; C: a deliberately wrong answer passes
 
 ## Grader validation on the labelled subset (150 items, 60 gold-pass / 90 gold-fail)
-- exact: agreement 80.0%, Cohen's kappa 0.545
-- normalized: agreement 100.0%, Cohen's kappa 1.000
-- rubric: agreement 99.3%, Cohen's kappa 0.986
+- exact: agreement 80.0%, Cohen's kappa 0.545; pass-class precision 1.000 / recall 0.500; fail-class precision 0.750 / recall 1.000
+- normalized: agreement 100.0%, Cohen's kappa 1.000; pass-class precision 1.000 / recall 1.000; fail-class precision 1.000 / recall 1.000
+- rubric: agreement 99.3%, Cohen's kappa 0.986; pass-class precision 0.984 / recall 1.000; fail-class precision 1.000 / recall 0.989
+
+Per-class precision/recall are reported descriptively (added 2026-11-16): agreement and kappa alone can hide a grader that is strong on one class and weak on the other. The H2 acceptance bound is unchanged from PREREGISTRATION.md.
 
 ## Hypotheses (bounds frozen before the run)
 - H1 audit detection: CONFIRMED — detected 11/12 (bound 10), false flags 0/60 (bound 3)

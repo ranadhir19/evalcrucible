@@ -40,12 +40,25 @@ def labelled_subset():
         items.append((t, "", False))                                    # empty
     return items
 
-def kappa(pairs):
+def confusion(pairs):
+    """Agreement, Cohen's kappa, and per-class precision/recall for a
+    list of (gold, predicted) boolean pairs.
+
+    Agreement and kappa are pooled numbers: either can look healthy
+    while the grader is strong on one class and weak on the other.
+    Precision and recall per class cannot hide that split, so the
+    report prints them beside the pooled numbers. They are descriptive
+    only — the H2 acceptance bound below is the frozen pair
+    (agreement, kappa) from PREREGISTRATION.md and does not move."""
     tp = sum(1 for g, p in pairs if g and p); tn = sum(1 for g, p in pairs if not g and not p)
     fp = sum(1 for g, p in pairs if not g and p); fn = sum(1 for g, p in pairs if g and not p)
     n = len(pairs); po = (tp + tn) / n
     pe = ((tp + fn) * (tp + fp) + (fp + tn) * (fn + tn)) / (n * n)
-    return po, (po - pe) / (1 - pe) if pe < 1 else 1.0
+    def div(a, b):
+        return a / b if b else 1.0
+    return dict(agreement=po, kappa=(po - pe) / (1 - pe) if pe < 1 else 1.0,
+                precision_pass=div(tp, tp + fp), recall_pass=div(tp, tp + fn),
+                precision_fail=div(tn, tn + fn), recall_fail=div(tn, tn + fp))
 
 def main():
     clean, flawed, dev = suite.clean_suite(), suite.flawed_suite(), suite.dev_suite()
@@ -88,22 +101,28 @@ def main():
     gres = {}
     for gname, gfn in graders.GRADERS.items():
         pairs = [(gold, gfn(out, t["expected"], t["prompt"])) for t, out, gold in items]
-        agree, kap = kappa(pairs)
-        gres[gname] = (agree, kap)
-        w(f"- {gname}: agreement {100*agree:.1f}%, Cohen's kappa {kap:.3f}")
+        s = confusion(pairs)
+        gres[gname] = s
+        w(f"- {gname}: agreement {100*s['agreement']:.1f}%, Cohen's kappa {s['kappa']:.3f}; "
+          f"pass-class precision {s['precision_pass']:.3f} / recall {s['recall_pass']:.3f}; "
+          f"fail-class precision {s['precision_fail']:.3f} / recall {s['recall_fail']:.3f}")
+    w()
+    w("Per-class precision/recall are reported descriptively (added 2026-11-16): "
+      "agreement and kappa alone can hide a grader that is strong on one class and "
+      "weak on the other. The H2 acceptance bound is unchanged from PREREGISTRATION.md.")
     w()
     # ---- hypotheses
     w("## Hypotheses (bounds frozen before the run)")
     h1 = len(detected) >= 10 and len(false_flags) <= 3
     w(f"- H1 audit detection: {'CONFIRMED' if h1 else 'NOT CONFIRMED'} — "
       f"detected {len(detected)}/12 (bound 10), false flags {len(false_flags)}/60 (bound 3)")
-    rubric_ok = gres["rubric"][0] >= 0.90 and gres["rubric"][1] >= 0.75
+    rubric_ok = gres["rubric"]["agreement"] >= 0.90 and gres["rubric"]["kappa"] >= 0.75
     fallback = None
     if not rubric_ok:
         for gname in ("normalized", "exact"):
-            if gres[gname][0] >= 0.90 and gres[gname][1] >= 0.75:
+            if gres[gname]["agreement"] >= 0.90 and gres[gname]["kappa"] >= 0.75:
                 fallback = gname; break
-    h2_line = (f"rubric grader agreement {100*gres['rubric'][0]:.1f}% / kappa {gres['rubric'][1]:.3f} "
+    h2_line = (f"rubric grader agreement {100*gres['rubric']['agreement']:.1f}% / kappa {gres['rubric']['kappa']:.3f} "
                f"vs bound 90% / 0.75 — ")
     if rubric_ok:
         w(f"- H2 grader acceptance: rubric ACCEPTED — " + h2_line + "bound met")
