@@ -4,6 +4,14 @@
 
 **Prove your graders: a grader-validation and benchmark-audit toolkit for agent builders.**
 
+## Quickstart
+
+```bash
+git clone https://github.com/ranadhir19/evalcrucible.git
+cd evalcrucible
+python3 validate.py   # self-check: must end with OVERALL PASS
+```
+
 Companion lab to The Architect's AI Workshop, Agent Series Ep. 4 —
 "Prove It Works: Building an Eval That Can Catch a Broken Agent
 (and a Broken Benchmark)".
