@@ -33,6 +33,7 @@ deterministic.
 | `run_eval.py` | Scores the four instrument agents on both suites, with Wilson 95% intervals — the audit's raw material, not a run-evaluation product. |
 | `experiment.py` | The pre-registered experiment; writes `RESULTS.md`. |
 | `PREREGISTRATION.md` | The hypotheses and acceptance bounds, frozen before the first run. |
+| `REAL_JUDGE_VALIDATION_2026-11-16.md` | The 2026-11-16 re-run of the validation procedure with a real model judge, plus a 410-item extended labelled set: the judge is accepted, and the rubric stand-in falls back at scale. Data in `data/`. |
 | `validate.py` | The harness: compile, unit tests, and an experiment re-run that must reproduce `RESULTS.md` byte for byte. |
 
 ## Installation
@@ -93,6 +94,24 @@ pre-registered experiment and writes the same text to `RESULTS.md`.
   shipment number from the prompt) because the number was close and
   appeared in the prompt. A judge that has been validated has a
   measured error rate; a judge that hasn't is a hope.
+- **Real-judge validation (2026-11-16; full record in
+  `REAL_JUDGE_VALIDATION_2026-11-16.md`, data in `data/`).** The
+  same procedure was re-run with a real model judge — Claude
+  Opus 5.5 via a hosted serving endpoint — executed externally
+  under a written run-spec. On the frozen 150 items the judge
+  scored agreement **99.3%** (Wilson 0.963–0.999), kappa **0.986**,
+  with 0 false passes and 1 false fail: **ACCEPT** under the
+  frozen bound, the same standing as the rubric stand-in. Its one
+  disagreement was a gold error in this lab's own arith-05
+  template (it never states stickers per pack) — documented, not
+  relabelled. On a new 410-item construction-labelled set built
+  for the run, the judge held ACCEPT (98.0% / 0.960) — but the
+  **rubric stand-in fell from ACCEPT to FALL BACK (85.9% agreement,
+  kappa 0.711, 34 false passes)**: thousands separators break its
+  token overlap, and its first-number closeness and prompt-echo
+  terms wave through dropped, duplicated and wrong-record
+  answers. The stand-in's acceptance was a property of the small
+  set, not of the grader.
 
 ## The honest criteria
 
@@ -110,6 +129,10 @@ be the headline. Report the measurement, not the hope.
 - At 60 tasks the Wilson intervals are wide (roughly ±10 points).
   That is itself one of the lab's results: differences smaller than
   the interval are not evidence, for anyone's benchmark.
-- The rubric grader is a deterministic proxy. Re-run the same
-  validation procedure with a real model judge before trusting one;
-  the procedure, not the proxy, is the deliverable.
+- The rubric grader is a deterministic proxy. The validation
+  procedure was re-run with a real model judge on 2026-11-16
+  (Claude Opus 5.5, hosted serving endpoint): ACCEPT on the frozen
+  150 (99.3% / 0.986) — and the proxy itself fell to FALL BACK on
+  a larger 410-item set (85.9% / 0.711). See
+  `REAL_JUDGE_VALIDATION_2026-11-16.md`. The procedure, not any
+  single grader, is the deliverable.
